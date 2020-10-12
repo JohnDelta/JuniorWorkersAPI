@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.junior_workers.authentication.JWTAuthenticate;
 import com.junior_workers.authentication.JWTUtils;
+import com.junior_workers.database_controllers.LanguageDatabase;
 import com.junior_workers.database_controllers.SkillDatabase;
 import com.junior_workers.database_controllers.UserDatabase;
+import com.junior_workers.models.Language;
 import com.junior_workers.models.Skill;
 import com.junior_workers.models.User;
 import com.junior_workers.bodies.*;
@@ -69,23 +71,21 @@ public class UserService {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(UserUpdateRequest userUpdateRequest) throws Exception {
+	public Response update(UpdateCandidateRequest updateCandidateRequest) throws Exception {
 		
-		String email = JWTAuthenticate.authenticate(userUpdateRequest.getJwt());
+		String email = JWTAuthenticate.authenticate(updateCandidateRequest.getJwt());
 		
 		if(email != null) {
-			User user = new User();
-			user.setEmail(email);
-			user.setFirstname(userUpdateRequest.getFirstname());
-			user.setLastname(userUpdateRequest.getLastname());
-			user.setTitle(userUpdateRequest.getTitle());
-			user.setBio(userUpdateRequest.getBio());
-			user.setImagePath(userUpdateRequest.getImagePath());
-			user.setVideoPath(userUpdateRequest.getVideoPath());
-			user.setResumePath(userUpdateRequest.getResumePath());
-			user.setAvailability(userUpdateRequest.getAvailability());
-			
-			if(new UserDatabase().update(user)) {
+			if(new UserDatabase().update(updateCandidateRequest.getUser())) {
+				
+				new SkillDatabase().deleteByUser(updateCandidateRequest.getUser());
+				new SkillDatabase().addToUser(updateCandidateRequest.getUser(),
+						updateCandidateRequest.getSkills());
+				
+				new LanguageDatabase().deleteByUser(updateCandidateRequest.getUser());
+				new LanguageDatabase().addToUser(updateCandidateRequest.getUser(),
+						updateCandidateRequest.getLanguages());
+				
 				return Response.status(200).build();
 			}
 			
@@ -106,11 +106,11 @@ public class UserService {
 		
 		if(user != null) {
 			
-			if(new UserDatabase().delete(user)) {
-				return Response.status(200).build();
-			}
-			
-			return Response.status(400).build();
+			new SkillDatabase().deleteByUser(user);
+			new LanguageDatabase().deleteByUser(user);
+			new UserDatabase().delete(user);
+
+			return Response.status(200).build();
 		}
 		
 		return Response.status(401).build();
@@ -127,10 +127,12 @@ public class UserService {
 		
 		if(user != null) {
 			List<Skill> skills = new SkillDatabase().getByUser(user);
-			
+			List<Language> languages = new LanguageDatabase().getLanguageAndLevelByUser(user);
+					
 			CandidateResponse candidateResponse = new CandidateResponse();
 			candidateResponse.setSkills(skills);
 			candidateResponse.setUser(user);
+			candidateResponse.setLanguages(languages);
 			
 			return Response.status(200).entity(candidateResponse).build();
 		}

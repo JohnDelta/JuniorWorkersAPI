@@ -15,7 +15,7 @@ public class Database {
 	public Connection getConnection() {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
+			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 			connection = DriverManager
                     .getConnection("jdbc:mysql://"+hostName+"/"+databaseName+""
                     		+ "?user="+username

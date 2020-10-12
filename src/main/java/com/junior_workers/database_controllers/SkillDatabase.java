@@ -24,7 +24,7 @@ public class SkillDatabase {
 
 			String query = "SELECT * FROM " + this.tableName + ";";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
 			
             while(resultSet.next()) {
             	Skill skill = new Skill();
@@ -44,6 +44,34 @@ public class SkillDatabase {
 		return null;
 	}
 	
+	public Skill getById(long skillId) throws SQLException {
+		
+		Skill skill = null;
+		
+		Connection connection = null;
+		try{
+			connection = new Database().getConnection();
+
+			String query = "SELECT * FROM " + this.tableName + " WHERE id_skill=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, skillId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+			
+            if(resultSet.next()) {
+            	skill = new Skill();
+            	skill.setSkillId(resultSet.getLong("id_skill"));
+            	skill.setTitle(resultSet.getString("title"));
+            }
+            
+		} catch(Exception e) {
+			System.out.println("Error in SkillDatabase.java | Exception message: " + e.getMessage());
+		} finally {
+			connection.close();
+		}
+		
+		return skill;
+	}
+	
 	public List<Skill> getByUser(User user) throws SQLException {
 		
 		List<Integer> userHasSkills = new ArrayList<Integer>();
@@ -53,27 +81,20 @@ public class SkillDatabase {
 		try{
 			connection = new Database().getConnection();
 
-			String query = "SELECT * FROM user_has_skill WHERE id_user=?;";
+			String query = "SELECT * FROM user_has_skill WHERE id_user=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, (int) user.getUserId());
-            ResultSet resultSet = preparedStatement.executeQuery(query);
+            preparedStatement.setLong(1, user.getUserId());
+            ResultSet resultSet = preparedStatement.executeQuery();
 			
             while(resultSet.next()) {
             	userHasSkills.add(resultSet.getInt("id_skill"));
             }
             
             for(int skillId : userHasSkills) {
-            	query = "SELECT * FROM skill WHERE id_skill=?;";
-            	preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setInt(1, skillId);
-                resultSet = preparedStatement.executeQuery(query);
-                
-                while(resultSet.next()) {
-                	Skill skill = new Skill();
-                	skill.setSkillId(resultSet.getLong("id_skill"));
-                	skill.setTitle(resultSet.getString("title"));
-                	skills.add(skill);
-                }
+            	Skill skill = getById(skillId);
+            	if(skill != null) {
+            		skills.add(skill);
+            	}
             }
             
 			return skills;
@@ -104,9 +125,9 @@ public class SkillDatabase {
 			for(Skill skill: skills) {
 				query = "DELETE FROM user_has_skill WHERE id_skill=? AND id_user=?;";
 	            preparedStatement = connection.prepareStatement(query);
-	            preparedStatement.setInt(1, (int) skill.getSkillId());
-	            preparedStatement.setInt(2, (int) user.getUserId());
-	            preparedStatement.executeUpdate(query);	
+	            preparedStatement.setLong(1, skill.getSkillId());
+	            preparedStatement.setLong(2, user.getUserId());
+	            preparedStatement.executeUpdate();	
 			}
             
 		} catch(Exception e) {
@@ -130,9 +151,9 @@ public class SkillDatabase {
 				query = "INSERT INTO user_has_skill (id_user, id_skill) VALUES(?, ?);";
 	            preparedStatement = connection.prepareStatement(query);
 	            
-	            preparedStatement.setInt(1, (int) user.getUserId());
-	            preparedStatement.setInt(2, (int) skill.getSkillId());
-	            preparedStatement.executeUpdate(query);
+	            preparedStatement.setLong(1, user.getUserId());
+	            preparedStatement.setLong(2, skill.getSkillId());
+	            preparedStatement.executeUpdate();
 			}
 			
 		} catch(Exception e) {

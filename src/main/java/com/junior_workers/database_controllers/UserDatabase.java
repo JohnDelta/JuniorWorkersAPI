@@ -82,6 +82,8 @@ public class UserDatabase {
 			return false;
 		}
 		
+		// Only these fields update for now
+		
 		if(user.getFirstname().isEmpty()) {
 			user.setFirstname(previousDataUser.getFirstname());
 		}

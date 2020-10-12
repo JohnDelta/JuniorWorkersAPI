@@ -2,15 +2,22 @@ package com.junior_workers.bodies;
 
 import java.util.List;
 
-import com.junior_workers.models.Language;
-import com.junior_workers.models.Skill;
-import com.junior_workers.models.User;
+import com.junior_workers.models.*;
 
-public class CandidateResponse {
-
+public class UpdateCandidateRequest {
+	
+	private String jwt;
 	private User user;
 	private List<Skill> skills;
 	private List<Language> languages;
+	
+	public String getJwt() {
+		return jwt;
+	}
+
+	public void setJwt(String jwt) {
+		this.jwt = jwt;
+	}
 	
 	public User getUser() {
 		return user;
