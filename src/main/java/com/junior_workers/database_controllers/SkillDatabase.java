@@ -22,7 +22,7 @@ public class SkillDatabase {
 		try{
 			connection = new Database().getConnection();
 
-			String query = "SELECT * FROM " + this.tableName + ";";
+			String query = "SELECT * FROM skill";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 			
@@ -52,7 +52,7 @@ public class SkillDatabase {
 		try{
 			connection = new Database().getConnection();
 
-			String query = "SELECT * FROM " + this.tableName + " WHERE id_skill=?";
+			String query = "SELECT * FROM skill WHERE id_skill=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, skillId);
             ResultSet resultSet = preparedStatement.executeQuery();

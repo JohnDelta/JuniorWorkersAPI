@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.junior_workers.authentication.JWTAuthenticate;
 import com.junior_workers.authentication.JWTUtils;
+import com.junior_workers.database_controllers.EducationDatabase;
+import com.junior_workers.database_controllers.ExperienceDatabase;
 import com.junior_workers.database_controllers.LanguageDatabase;
 import com.junior_workers.database_controllers.SkillDatabase;
 import com.junior_workers.database_controllers.UserDatabase;
+import com.junior_workers.models.Education;
+import com.junior_workers.models.Experience;
 import com.junior_workers.models.Language;
 import com.junior_workers.models.Skill;
 import com.junior_workers.models.User;
@@ -73,23 +77,38 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(UpdateCandidateRequest updateCandidateRequest) throws Exception {
 		
-		String email = JWTAuthenticate.authenticate(updateCandidateRequest.getJwt());
+		String email = JWTAuthenticate.getUsername(updateCandidateRequest.getJwt());
+		if(email == null) {
+			return Response.status(401).build();
+		}
 		
-		if(email != null) {
-			if(new UserDatabase().update(updateCandidateRequest.getUser())) {
-				
-				new SkillDatabase().deleteByUser(updateCandidateRequest.getUser());
-				new SkillDatabase().addToUser(updateCandidateRequest.getUser(),
-						updateCandidateRequest.getSkills());
-				
-				new LanguageDatabase().deleteByUser(updateCandidateRequest.getUser());
-				new LanguageDatabase().addToUser(updateCandidateRequest.getUser(),
-						updateCandidateRequest.getLanguages());
-				
-				return Response.status(200).build();
-			}
+		String mode = JWTAuthenticate.getMode(updateCandidateRequest.getJwt());
+		
+		if(mode.equals("candidate")) {
 			
-			return Response.status(400).build();
+			// make sure the account you update is the jwt owners
+			updateCandidateRequest.getUser().setEmail(email);
+			
+			new SkillDatabase().deleteByUser(updateCandidateRequest.getUser());
+			new SkillDatabase().addToUser(updateCandidateRequest.getUser(),
+					updateCandidateRequest.getSkills());
+			
+			new LanguageDatabase().deleteByUser(updateCandidateRequest.getUser());
+			new LanguageDatabase().addToUser(updateCandidateRequest.getUser(),
+					updateCandidateRequest.getLanguages());
+			
+			new EducationDatabase().deleteByUser(updateCandidateRequest.getUser());
+			new EducationDatabase().addToUser(updateCandidateRequest.getUser(),
+					updateCandidateRequest.getAllEducation());
+			
+			new ExperienceDatabase().deleteByUser(updateCandidateRequest.getUser());
+			new ExperienceDatabase().addToUser(updateCandidateRequest.getUser(),
+					updateCandidateRequest.getExperiences());
+			
+			return Response.status(200).build();
+			
+		} else if(mode.equals("hirer")) {
+			
 		}
 		
 		return Response.status(401).build();
@@ -101,40 +120,65 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response delete(JwtRequest jwtRequest) throws Exception {
 		
-		String email = JWTAuthenticate.authenticate(jwtRequest.getJwt());
-		User user = new UserDatabase().find(email);
+		String email = JWTAuthenticate.getUsername(jwtRequest.getJwt());
+		if(email == null) {
+			return Response.status(401).build();
+		}
 		
-		if(user != null) {
+		String mode = JWTAuthenticate.getMode(jwtRequest.getJwt());
+		
+		if(mode.equals("candidate")) {
+		
+			User user = new UserDatabase().find(email);
 			
 			new SkillDatabase().deleteByUser(user);
 			new LanguageDatabase().deleteByUser(user);
-			new UserDatabase().delete(user);
+			new EducationDatabase().deleteByUser(user);
+			new ExperienceDatabase().deleteByUser(user);
+			new UserDatabase().delete(user); // must be last one to delete
 
 			return Response.status(200).build();
+
+		} else if(mode.equals("hirer")) {
+			
 		}
 		
 		return Response.status(401).build();
 	}
 	
 	@POST
-	@Path("/get-owner")
+	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(JwtRequest jwtRequest) throws Exception {
 		
-		String email = JWTAuthenticate.authenticate(jwtRequest.getJwt());
-		User user = new UserDatabase().find(email);
+		String email = JWTAuthenticate.getUsername(jwtRequest.getJwt());
+		if(email == null) {
+			return Response.status(401).build();
+		}
 		
-		if(user != null) {
+		String mode = JWTAuthenticate.getMode(jwtRequest.getJwt());
+		
+		if(mode.equals("candidate")) {
+			
+			User user = new UserDatabase().find(email);
+			
 			List<Skill> skills = new SkillDatabase().getByUser(user);
 			List<Language> languages = new LanguageDatabase().getLanguageAndLevelByUser(user);
-					
+			List<Education> allEducation = new EducationDatabase().getEducationAndLevelByUser(user);
+			List<Experience> experiences = new ExperienceDatabase().getByUser(user);
+			
 			CandidateResponse candidateResponse = new CandidateResponse();
 			candidateResponse.setSkills(skills);
 			candidateResponse.setUser(user);
 			candidateResponse.setLanguages(languages);
+			candidateResponse.setAllEducation(allEducation);
+			candidateResponse.setExperiences(experiences);
 			
 			return Response.status(200).entity(candidateResponse).build();
+		
+		} else if(mode.equals("hirer")) {
+			
 		}
 		
 		return Response.status(401).build();

@@ -81,7 +81,7 @@ public class LanguageDatabase {
 		try{
 			connection = new Database().getConnection();
 
-			String query = "SELECT * FROM language WHERE id_skill=?";
+			String query = "SELECT * FROM language WHERE id_language=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, languageId);
             ResultSet resultSet = preparedStatement.executeQuery();

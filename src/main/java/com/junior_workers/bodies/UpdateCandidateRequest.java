@@ -10,6 +10,8 @@ public class UpdateCandidateRequest {
 	private User user;
 	private List<Skill> skills;
 	private List<Language> languages;
+	private List<Education> allEducation;
+	private List<Experience> experiences;
 	
 	public String getJwt() {
 		return jwt;
@@ -41,6 +43,22 @@ public class UpdateCandidateRequest {
 
 	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
+	}
+
+	public List<Education> getAllEducation() {
+		return allEducation;
+	}
+
+	public void setAllEducation(List<Education> allEducation) {
+		this.allEducation = allEducation;
+	}
+
+	public List<Experience> getExperiences() {
+		return experiences;
+	}
+
+	public void setExperiences(List<Experience> experiences) {
+		this.experiences = experiences;
 	}
 	
 }
