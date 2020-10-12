@@ -2,7 +2,9 @@
 
 Restfull API provider for the Junior Workers project
 
-JuniorWorkersAPI front-end web app can be found at https://github.com/JohnDelta/junior_workers
+The current API is written is PHP and I'm transferring it to Java.
+
+Junior Workers main project can be found at https://github.com/JohnDelta/junior_workers
 
 ## About
 junior workers
@@ -16,7 +18,7 @@ junior workers
 - Maven 3.8+
 
 ## dependencies
-- jaxrs-ri (Jersey)
+- jaxrs Jersey
 - org.json
 - MySQL connector java
 - jjwt
@@ -69,7 +71,7 @@ junior workers
  
 - returns: application/json
 
-## update account
+## update account (role: candidate)
 - *All object keys must be presented. If they're empty or null or negative they won't update any values
 - url: localhost:8080/api/user/update
 - method: POST
@@ -136,6 +138,43 @@ junior workers
 ```
 - returns: application/json
 
+## update account (role: hirer)
+- *All object keys must be presented. If they're empty or null or negative they won't update any values
+- url: localhost:8080/api/user/update
+- method: POST
+- content-type: application/json
+- body:
+ 
+```  
+	{
+		"jwt": "jwt key"
+		"user": {
+			"firstname": "",
+			"lastname": "",
+			"availability": "",
+			"title": "",
+			"bio": "",
+		},
+		"jobPosts": [
+			{
+				"description": "",
+				"title": "",
+				"user": {
+					"email": "",
+					"firstname": "",
+					...
+				},
+				"profession": {
+					"professionId": "",
+					"title": ""
+				}
+			},
+		]
+	}
+	
+```
+- returns: application/json
+
 ## delete account (jwt owner)
 - url: localhost:8080/api/user/delete
 - method: POST
@@ -147,10 +186,55 @@ junior workers
 - url: localhost:8080/api/user/get
 - method: POST
 - content-type: application/json
-- body: ` All user's data including education, languages, experience, job_posts, skills `
+- body: ` {"jwt":"jwt key"} `
+- returns: application/json
+` All user's data including education, languages, experience, job_posts, skills `
+
+## get all models
+- url: localhost:8080/api/model/get/all
+- method: GET
 - returns: application/json
 
+```
 
+	"allEducation": [
+		{
+			"educationId": "",
+			"title": ""
+		},
+	],
+	"educationLevels": [
+		{
+			"educationLevelId": "",
+			"title": ""
+		},
+	],
+	"language": [
+		{
+			"languageId": "",
+			"title": ""
+		},
+	],
+	"languageLevels": [
+		{
+			"languageLevelId": "",
+			"title": ""
+		},
+	],
+	"skills": [
+		{
+			"skillId": "",
+			"title": ""
+		},
+	],
+	"professions": [
+		{
+			"skillId": "",
+			"title": ""
+		},
+	]
+
+```
 
 
 

@@ -6,11 +6,13 @@ import com.junior_workers.authentication.JWTAuthenticate;
 import com.junior_workers.authentication.JWTUtils;
 import com.junior_workers.database_controllers.EducationDatabase;
 import com.junior_workers.database_controllers.ExperienceDatabase;
+import com.junior_workers.database_controllers.JobPostDatabase;
 import com.junior_workers.database_controllers.LanguageDatabase;
 import com.junior_workers.database_controllers.SkillDatabase;
 import com.junior_workers.database_controllers.UserDatabase;
 import com.junior_workers.models.Education;
 import com.junior_workers.models.Experience;
+import com.junior_workers.models.JobPost;
 import com.junior_workers.models.Language;
 import com.junior_workers.models.Skill;
 import com.junior_workers.models.User;
@@ -126,11 +128,10 @@ public class UserService {
 		}
 		
 		String mode = JWTAuthenticate.getMode(jwtRequest.getJwt());
+		User user = new UserDatabase().find(email);
 		
 		if(mode.equals("candidate")) {
 		
-			User user = new UserDatabase().find(email);
-			
 			new SkillDatabase().deleteByUser(user);
 			new LanguageDatabase().deleteByUser(user);
 			new EducationDatabase().deleteByUser(user);
@@ -158,10 +159,9 @@ public class UserService {
 		}
 		
 		String mode = JWTAuthenticate.getMode(jwtRequest.getJwt());
+		User user = new UserDatabase().find(email);
 		
 		if(mode.equals("candidate")) {
-			
-			User user = new UserDatabase().find(email);
 			
 			List<Skill> skills = new SkillDatabase().getByUser(user);
 			List<Language> languages = new LanguageDatabase().getLanguageAndLevelByUser(user);
@@ -179,6 +179,13 @@ public class UserService {
 		
 		} else if(mode.equals("hirer")) {
 			
+			List<JobPost> jobPosts = new JobPostDatabase().getByUser(user);
+			
+			HirerResponse hirerResponse = new HirerResponse();
+			hirerResponse.setUser(user);
+			hirerResponse.setJobPosts(jobPosts);
+			
+			return Response.status(200).entity(hirerResponse).build();
 		}
 		
 		return Response.status(401).build();
