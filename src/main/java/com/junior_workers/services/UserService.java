@@ -151,17 +151,16 @@ public class UserService {
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(JwtRequest jwtRequest) throws Exception {
+	public Response get(GetUserRequest getUserRequest) throws Exception {
 		
-		String email = JWTAuthenticate.getUsername(jwtRequest.getJwt());
+		String email = JWTAuthenticate.getUsername(getUserRequest.getJwt());
 		if(email == null) {
 			return Response.status(401).build();
 		}
 		
-		String mode = JWTAuthenticate.getMode(jwtRequest.getJwt());
-		User user = new UserDatabase().find(email);
+		User user = new UserDatabase().find(getUserRequest.getEmail());
 		
-		if(mode.equals("candidate")) {
+		if(user.getRole().equals("candidate")) {
 			
 			List<Skill> skills = new SkillDatabase().getByUser(user);
 			List<Language> languages = new LanguageDatabase().getLanguageAndLevelByUser(user);
@@ -177,7 +176,7 @@ public class UserService {
 			
 			return Response.status(200).entity(candidateResponse).build();
 		
-		} else if(mode.equals("hirer")) {
+		} else if(user.getRole().equals("hirer")) {
 			
 			List<JobPost> jobPosts = new JobPostDatabase().getByUser(user);
 			

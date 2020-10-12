@@ -182,11 +182,11 @@ junior workers
 - body: ` {"jwt":"jwt key"} `
 - returns: application/json
 
-## get account (jwt owner)
+## get account
 - url: localhost:8080/api/user/get
 - method: POST
 - content-type: application/json
-- body: ` {"jwt":"jwt key"} `
+- body: ` {"jwt":"jwt key", "email": "user's email"} `
 - returns: application/json
 ` All user's data including education, languages, experience, job_posts, skills `
 
@@ -235,7 +235,16 @@ junior workers
 	]
 
 ```
+## search
+- url: localhost:8080/api/search/all
+- method: POST
+- content-type: application/json
+- body: ` {"role": "candidate | hirer", "key":"any key to search for"} `
+- returns: application/json
 
+```
+	res
+```
 
 
 
