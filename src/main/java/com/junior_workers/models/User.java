@@ -2,22 +2,26 @@ package com.junior_workers.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class User {
 
+	@JsonbProperty("id_user")
 	private long userId;
 	private String email;
-	
 	@JsonIgnore
 	private String password;
-	
 	private String firstname;
 	private String lastname;
 	private int availability = 0;
 	private String title = "";
 	private String bio = "";
 	private String role = "candidate";
+	@JsonbProperty("image_path")
 	private String imagePath = "";
+	@JsonbProperty("video_path")
 	private String videoPath = "";
+	@JsonbProperty("resume_path")
 	private String resumePath = "";
 	
 	public long getUserId() {

@@ -46,6 +46,9 @@ junior workers
 	
 # API Requests (local testing server: localhost:8080/api)
 
+* be careful with the key naming convention. It's been changed to match
+	the junior-workers's old PHP API 
+
 ## login
 - url: localhost:8080/api/user/login
 - method: POST
@@ -87,39 +90,39 @@ junior workers
 			"availability": "",
 			"title": "",
 			"bio": "",
-			"imagePath": "",
-			"videoPath": "",
-			"resumePath": ""
+			"image_path": "",
+			"video_path": "",
+			"resume_path": ""
 		},
-		"skills": [
+		"skill": [
 			{
 				"title": "",
-				"skillId": ""
+				"id_skill": ""
 			},
 		],
-		"languages": [
+		"language": [
 			{
 				"title": "",
-				"languageId": "",
-				"languageLevel": {
-					"languageLevelId": "",
+				"id_language": "",
+				"language_level": {
+					"id_language_level": "",
 					"title": ""
 				}
 			},
 		],
-		"allEducation": [
+		"education": [
 			{
 				"title": "",
-				"educationId": "",
-				"educationLevel": {
-					"educationLevelId": "",
+				"id_education": "",
+				"education_level": {
+					"id_education_level": "",
 					"title": ""
 				}
 			},
 		],
-		"experiences": [
+		"experience": [
 			{
-				"experienceId": ""
+				"id_experience": ""
 				"company": "",
 				"date": "",
 				"user": {
@@ -128,7 +131,7 @@ junior workers
 					...
 				},
 				"profession": {
-					"professionId": "",
+					"id_profession": "",
 					"title": ""
 				}
 			},
@@ -155,7 +158,7 @@ junior workers
 			"title": "",
 			"bio": "",
 		},
-		"jobPosts": [
+		"job_post": [
 			{
 				"description": "",
 				"title": "",
@@ -165,7 +168,7 @@ junior workers
 					...
 				},
 				"profession": {
-					"professionId": "",
+					"id_profession": "",
 					"title": ""
 				}
 			},
@@ -188,7 +191,7 @@ junior workers
 - content-type: application/json
 - body: ` {"jwt":"jwt key", "email": "user's email"} `
 - returns: application/json
-` All user's data including education, languages, experience, job_posts, skills `
+` All user's data including education, language, experience, job_post, skill `
 
 ## get all models
 - url: localhost:8080/api/model/get/all
@@ -197,39 +200,39 @@ junior workers
 
 ```
 
-	"allEducation": [
+	"education": [
 		{
-			"educationId": "",
+			"id_education": "",
 			"title": ""
 		},
 	],
-	"educationLevels": [
+	"education_level": [
 		{
-			"educationLevelId": "",
+			"id_education_level": "",
 			"title": ""
 		},
 	],
 	"language": [
 		{
-			"languageId": "",
+			"id_language": "",
 			"title": ""
 		},
 	],
-	"languageLevels": [
+	"language_level": [
 		{
-			"languageLevelId": "",
+			"id_language_level": "",
 			"title": ""
 		},
 	],
-	"skills": [
+	"skill": [
 		{
-			"skillId": "",
+			"id_skillI": "",
 			"title": ""
 		},
 	],
-	"professions": [
+	"profession": [
 		{
-			"skillId": "",
+			"id_skill": "",
 			"title": ""
 		},
 	]

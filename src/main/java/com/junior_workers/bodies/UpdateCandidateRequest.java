@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.junior_workers.models.*;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class UpdateCandidateRequest {
 	
 	private String jwt;
@@ -25,6 +27,7 @@ public class UpdateCandidateRequest {
 		return user;
 	}
 	
+	@JsonbProperty("skill")
 	public List<Skill> getSkills() {
 		return skills;
 	}
@@ -37,6 +40,7 @@ public class UpdateCandidateRequest {
 		this.skills = skills;
 	}
 
+	@JsonbProperty("language")
 	public List<Language> getLanguages() {
 		return languages;
 	}
@@ -45,6 +49,7 @@ public class UpdateCandidateRequest {
 		this.languages = languages;
 	}
 
+	@JsonbProperty("education")
 	public List<Education> getAllEducation() {
 		return allEducation;
 	}
@@ -53,6 +58,7 @@ public class UpdateCandidateRequest {
 		this.allEducation = allEducation;
 	}
 
+	@JsonbProperty("experience")
 	public List<Experience> getExperiences() {
 		return experiences;
 	}

@@ -1,9 +1,15 @@
 package com.junior_workers.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class Language {
 
+	@JsonbProperty("id_language")
 	private long languageId;
 	private String title;
+	@JsonIgnore
 	private LanguageLevel languageLevel;
 	
 	public long getLanguageId() {

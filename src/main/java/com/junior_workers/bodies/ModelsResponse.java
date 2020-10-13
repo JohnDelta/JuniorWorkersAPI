@@ -4,13 +4,21 @@ import java.util.List;
 
 import com.junior_workers.models.*;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class ModelsResponse {
 
+	@JsonbProperty("education")
 	private List<Education> allEducation;
+	@JsonbProperty("education_level")
 	private List<EducationLevel> educationLevels;
+	@JsonbProperty("language")
 	private List<Language> languages;
+	@JsonbProperty("language_level")
 	private List<LanguageLevel> languageLevels;
+	@JsonbProperty("skill")
 	private List<Skill> skills;
+	@JsonbProperty("prefession")
 	private List<Profession> professions;
 	
 	public List<Education> getAllEducation() {

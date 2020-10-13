@@ -1,9 +1,15 @@
 package com.junior_workers.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class Education {
 
+	@JsonbProperty("id_education")
 	private long educationId;
 	private String title;
+	@JsonIgnore
 	private EducationLevel educationLevel;
 	
 	public long getEducationId() {

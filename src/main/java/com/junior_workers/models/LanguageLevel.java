@@ -1,7 +1,10 @@
 package com.junior_workers.models;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class LanguageLevel {
 
+	@JsonbProperty("id_language_level")
 	private long languageLevelId;
 	private String title;
 	

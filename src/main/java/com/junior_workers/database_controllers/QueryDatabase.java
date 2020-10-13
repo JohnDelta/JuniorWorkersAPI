@@ -4,14 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.junior_workers.bodies.SearchResponse;
+import com.junior_workers.bodies.SearchBody;
 
 public class QueryDatabase {
 	
-	public SearchResponse searchAll(String role, String key) throws SQLException {
+	public List<SearchBody> searchAll(String role, String key) throws SQLException {
 		
-		SearchResponse searchResponse = null;
+		List<SearchBody> searchBodies = null;
 		
 		Connection connection = null;
 		try{
@@ -19,7 +21,7 @@ public class QueryDatabase {
 
 			if(role.equals("candidate")) {
 				
-				searchResponse = new SearchResponse();
+				searchBodies = new ArrayList<SearchBody>();
 				
 				String query = "SELECT DISTINCT user.firstname, user.lastname, user.email, user.title, user.image_path, user.role " + 
 			           " FROM user, education, language, skill, user_has_language, user_has_education, user_has_skill, " +
@@ -35,15 +37,13 @@ public class QueryDatabase {
 			               " profession.id_profession = experience.id_profession AND " +
 			               " user_has_education.id_education_level = education_level.id_education_level AND " +
 			               " user_has_language.id_language_level = language_level.id_language_level AND " +
-			               " user.role = '" + key + "' AND " +
-			               " user.availability = '1' AND " +
+			               " user.role = '" + role + "' AND " +
+			               " user.availability = 1 AND " +
 			               " ( " +
 			                   " user.firstname like '%" + key + "%' OR " + 
 			                   " user.lastname like '%" + key + "%' OR " + 
 			                   " user.bio like '%" + key + "%' OR " +
 			                   " user.title like '%" + key + "%' OR " +
-			                   " user.role like '%" + key + "%' OR " +
-			                    
 			                   " education.title like '%" + key + "%' OR " +
 			                   " language.title like '%" + key + "%' OR " +
 			                   " skill.title like '%" + key + "%' OR " +
@@ -54,19 +54,19 @@ public class QueryDatabase {
 				ResultSet resultSet = preparedStatement.executeQuery();
 				
 				while(resultSet.next()) {
-					SearchResponse.SearchBody searchBody = searchResponse.new SearchBody();
+					SearchBody searchBody = new SearchBody();
 					searchBody.setEmail(resultSet.getString("email"));
 					searchBody.setFirstname(resultSet.getString("firstname"));
 					searchBody.setLastname(resultSet.getString("lastname"));
 					searchBody.setRole(resultSet.getString("role"));
 					searchBody.setTitle(resultSet.getString("title"));
 					searchBody.setImagePath(resultSet.getString("image_path"));
-					searchResponse.getResults().add(searchBody);
+					searchBodies.add(searchBody);
 				}
 				
 			} else if(role.equals("hirer")) {
 				
-				searchResponse = new SearchResponse();
+				searchBodies = new ArrayList<SearchBody>();
 				
 				String query = "SELECT DISTINCT user.firstname, user.lastname, user.email, user.title, user.image_path, " +
 		                " job_post.title AS job_post_title, job_post.description, job_post.id_profession, user.role " + 
@@ -74,7 +74,7 @@ public class QueryDatabase {
 		           " WHERE " +
 		               " user.id_user = job_post.id_user AND " +
 		               " profession.id_profession = job_post.id_profession AND " +
-		               " user.role = '" + key + "' AND " +
+		               " user.role = '" + role + "' AND " +
 		               " ( " +
 		                   " user.firstname like '%" + key + "%' OR " + 
 		                   " user.lastname like '%" + key + "%' OR " +
@@ -91,7 +91,7 @@ public class QueryDatabase {
 				ResultSet resultSet = preparedStatement.executeQuery();
 				
 				while(resultSet.next()) {
-					SearchResponse.SearchBody searchBody = searchResponse.new SearchBody();
+					SearchBody searchBody = new SearchBody();
 					searchBody.setEmail(resultSet.getString("email"));
 					searchBody.setFirstname(resultSet.getString("firstname"));
 					searchBody.setLastname(resultSet.getString("lastname"));
@@ -101,7 +101,7 @@ public class QueryDatabase {
 					searchBody.setDescription(resultSet.getString("description"));
 					searchBody.setJobTitle(resultSet.getString("job_post_title"));
 					searchBody.setProfessionId(resultSet.getLong("id_profession"));
-					searchResponse.getResults().add(searchBody);
+					searchBodies.add(searchBody);
 				}
 			}
 			
@@ -111,7 +111,7 @@ public class QueryDatabase {
 			connection.close();
 		}
 		
-		return searchResponse;
+		return searchBodies;
 	}
 
 }

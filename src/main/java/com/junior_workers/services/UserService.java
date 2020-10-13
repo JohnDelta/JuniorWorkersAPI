@@ -48,7 +48,13 @@ public class UserService {
 					"JUNIO_WORKERS_API",
 					"LOGIN_REQUEST",
 					3600*1000);
-			return Response.status(200).entity(jwt).build();
+			
+			UserLoginResponse userLoginResponse = new UserLoginResponse();
+			userLoginResponse.setJwt(jwt);
+			userLoginResponse.setEmail(user.getEmail());
+			userLoginResponse.setRole(user.getRole());
+			
+			return Response.status(200).entity(userLoginResponse).build();
 		}
 		return Response.status(400).build();
 	}
@@ -90,6 +96,8 @@ public class UserService {
 			
 			// make sure the account you update is the jwt owners
 			updateCandidateRequest.getUser().setEmail(email);
+			
+			new UserDatabase().update(updateCandidateRequest.getUser());
 			
 			new SkillDatabase().deleteByUser(updateCandidateRequest.getUser());
 			new SkillDatabase().addToUser(updateCandidateRequest.getUser(),

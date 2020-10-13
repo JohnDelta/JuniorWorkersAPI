@@ -5,6 +5,8 @@ import java.util.List;
 import com.junior_workers.models.JobPost;
 import com.junior_workers.models.User;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class UpdateHirerRequest {
 
 	private String jwt;
@@ -19,6 +21,7 @@ public class UpdateHirerRequest {
 		return user;
 	}
 	
+	@JsonbProperty("job_post")
 	public List<JobPost> getJobPosts() {
 		return jobPosts;
 	}

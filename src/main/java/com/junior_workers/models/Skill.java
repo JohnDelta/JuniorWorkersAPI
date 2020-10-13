@@ -1,7 +1,10 @@
 package com.junior_workers.models;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class Skill {
 
+	@JsonbProperty("id_skill")
 	private long skillId;
 	private String title;
 	

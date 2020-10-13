@@ -1,7 +1,10 @@
 package com.junior_workers.models;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class Experience {
 
+	@JsonbProperty("id_experience")
 	private long experienceId;
 	private String company;
 	private String date;

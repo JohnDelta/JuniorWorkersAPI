@@ -8,12 +8,18 @@ import com.junior_workers.models.Language;
 import com.junior_workers.models.Skill;
 import com.junior_workers.models.User;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class CandidateResponse {
 
 	private User user;
+	@JsonbProperty("skill")
 	private List<Skill> skills;
+	@JsonbProperty("language")
 	private List<Language> languages;
+	@JsonbProperty("education")
 	private List<Education> allEducation;
+	@JsonbProperty("experience")
 	private List<Experience> experiences;
 	
 	public User getUser() {
