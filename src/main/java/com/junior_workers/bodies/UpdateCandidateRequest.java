@@ -2,17 +2,24 @@ package com.junior_workers.bodies;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.junior_workers.models.*;
 
 import jakarta.json.bind.annotation.JsonbProperty;
 
+@JsonInclude(Include.NON_NULL)
 public class UpdateCandidateRequest {
 	
 	private String jwt;
 	private User user;
+	@JsonbProperty("skill")
 	private List<Skill> skills;
+	@JsonbProperty("language")
 	private List<Language> languages;
+	@JsonbProperty("education")
 	private List<Education> allEducation;
+	@JsonbProperty("experience")
 	private List<Experience> experiences;
 	
 	public String getJwt() {
@@ -27,7 +34,6 @@ public class UpdateCandidateRequest {
 		return user;
 	}
 	
-	@JsonbProperty("skill")
 	public List<Skill> getSkills() {
 		return skills;
 	}
@@ -40,7 +46,6 @@ public class UpdateCandidateRequest {
 		this.skills = skills;
 	}
 
-	@JsonbProperty("language")
 	public List<Language> getLanguages() {
 		return languages;
 	}
@@ -49,7 +54,6 @@ public class UpdateCandidateRequest {
 		this.languages = languages;
 	}
 
-	@JsonbProperty("education")
 	public List<Education> getAllEducation() {
 		return allEducation;
 	}
@@ -58,7 +62,6 @@ public class UpdateCandidateRequest {
 		this.allEducation = allEducation;
 	}
 
-	@JsonbProperty("experience")
 	public List<Experience> getExperiences() {
 		return experiences;
 	}

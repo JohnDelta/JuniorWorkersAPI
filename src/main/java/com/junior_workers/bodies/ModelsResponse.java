@@ -18,7 +18,7 @@ public class ModelsResponse {
 	private List<LanguageLevel> languageLevels;
 	@JsonbProperty("skill")
 	private List<Skill> skills;
-	@JsonbProperty("prefession")
+	@JsonbProperty("profession")
 	private List<Profession> professions;
 	
 	public List<Education> getAllEducation() {
