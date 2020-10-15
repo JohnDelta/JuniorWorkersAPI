@@ -30,7 +30,6 @@ public class ExperienceDatabase {
             	Profession profession = new ProfessionDatabase().getById(resultSet.getLong("id_profession"));
             	
             	Experience experience = new Experience();
-            	experience.setUser(user);
             	experience.setProfession(profession);
             	experience.setExperienceId(resultSet.getLong("id_experience"));
             	experience.setDate(resultSet.getString("date"));
@@ -94,7 +93,7 @@ public class ExperienceDatabase {
 	            
 	            preparedStatement.setString(1, experience.getCompany());
 	            preparedStatement.setString(2, experience.getDate());
-	            preparedStatement.setLong(3, experience.getUser().getUserId());
+	            preparedStatement.setLong(3, user.getUserId());
 	            preparedStatement.setLong(4, experience.getProfession().getProfessionId());
 	            preparedStatement.executeUpdate();
 			}

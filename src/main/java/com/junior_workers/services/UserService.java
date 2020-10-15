@@ -95,7 +95,8 @@ public class UserService {
 		if(mode.equals("candidate")) {
 			
 			// make sure the account you update is the jwt owners
-			updateCandidateRequest.getUser().setEmail(email);
+			User user = new UserDatabase().find(email);
+			updateCandidateRequest.setUser(user);
 			
 			new UserDatabase().update(updateCandidateRequest.getUser());
 			

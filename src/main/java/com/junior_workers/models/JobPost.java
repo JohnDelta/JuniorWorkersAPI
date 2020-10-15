@@ -8,7 +8,6 @@ public class JobPost {
 	private long jobPostId;
 	private String description;
 	private String title;
-	private User user;
 	private Profession profession;
 	
 	public long getJobPostId() {
@@ -21,10 +20,6 @@ public class JobPost {
 	
 	public String getTitle() {
 		return title;
-	}
-	
-	public User getUser() {
-		return user;
 	}
 	
 	public Profession getProfession() {
@@ -41,10 +36,6 @@ public class JobPost {
 	
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 	public void setProfession(Profession profession) {

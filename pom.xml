@@ -36,13 +36,23 @@
 		    <groupId>org.glassfish.jersey.bundles</groupId>
 		    <artifactId>jaxrs-ri</artifactId>
 		    <version>3.0.0-M6</version>
-		</dependency>				
+		</dependency>
+		<dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>2.5.1</version>
+        </dependency>				
 		<!-- if you are using Jersey client specific features -->
 		<dependency>
 		    <groupId>org.glassfish.jersey.core</groupId>
 		    <artifactId>jersey-client</artifactId>
 		    <version>2.5.1</version>
 		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-multipart</artifactId>
+		    <version>2.19</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>

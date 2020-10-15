@@ -8,7 +8,6 @@ public class Experience {
 	private long experienceId;
 	private String company;
 	private String date;
-	private User user;
 	private Profession profession;
 	
 	public long getExperienceId() {
@@ -21,10 +20,6 @@ public class Experience {
 	
 	public String getDate() {
 		return date;
-	}
-	
-	public User getUser() {
-		return user;
 	}
 	
 	public Profession getProfession() {
@@ -41,10 +36,6 @@ public class Experience {
 	
 	public void setDate(String date) {
 		this.date = date;
-	}
-	
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 	public void setProfession(Profession profession) {

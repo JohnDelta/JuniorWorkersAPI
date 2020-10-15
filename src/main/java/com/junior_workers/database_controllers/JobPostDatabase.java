@@ -30,7 +30,6 @@ public class JobPostDatabase {
             	Profession profession = new ProfessionDatabase().getById(resultSet.getLong("id_profession"));
             	
             	JobPost jobPost = new JobPost();
-            	jobPost.setUser(user);
             	jobPost.setProfession(profession);
             	jobPost.setDescription(resultSet.getString("description"));
             	jobPost.setTitle(resultSet.getString("title"));
@@ -94,7 +93,7 @@ public class JobPostDatabase {
 	            
 	            preparedStatement.setString(1, jobPost.getDescription());
 	            preparedStatement.setString(2, jobPost.getTitle());
-	            preparedStatement.setLong(3, jobPost.getUser().getUserId());
+	            preparedStatement.setLong(3, user.getUserId());
 	            preparedStatement.setLong(4, jobPost.getProfession().getProfessionId());
 	            preparedStatement.executeUpdate();
 			}

@@ -125,11 +125,6 @@ junior workers
 				"id_experience": ""
 				"company": "",
 				"date": "",
-				"user": {
-					"email": "",
-					"firstname": "",
-					...
-				},
 				"profession": {
 					"id_profession": "",
 					"title": ""
@@ -162,11 +157,6 @@ junior workers
 			{
 				"description": "",
 				"title": "",
-				"user": {
-					"email": "",
-					"firstname": "",
-					...
-				},
 				"profession": {
 					"id_profession": "",
 					"title": ""
