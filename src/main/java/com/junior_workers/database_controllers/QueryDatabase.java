@@ -40,7 +40,7 @@ public class QueryDatabase {
 						+ " WHERE "
 							+ "("
 								+ " user.role LIKE '"+role+"' AND"
-								+ " user.availability = 1 AND"
+								+ " user.availability = 1 AND ("
 								+ " user.firstname LIKE '%"+key+"%' OR"
 								+ " user.lastname LIKE '%"+key+"%' OR"
 								+ " user.title LIKE '%"+key+"%' OR"
@@ -49,7 +49,7 @@ public class QueryDatabase {
 								+ " education.title LIKE '%"+key+"%' OR"
 								+ " language.title LIKE '%"+key+"%' OR"
 								+ " skill.title LIKE '%"+key+"%' OR"
-								+ " profession.title LIKE '%"+key+"%'"
+								+ " profession.title LIKE '%"+key+"%' )"
 							+ ")";
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				ResultSet resultSet = preparedStatement.executeQuery();
@@ -78,15 +78,14 @@ public class QueryDatabase {
 			                	+ " LEFT JOIN profession ON profession.id_profession = job_post.id_profession"
 			                + " WHERE"
 			              + " ( "
-			              		+ " user.role LIKE '" + role + "' AND"
+			              		+ " user.role LIKE '" + role + "' AND ("
 								+ " user.firstname like '%" + key + "%' OR" 
 								+ " user.lastname like '%" + key + "%' OR"
 								+ " user.bio like '%" + key + "%' OR"
-								+ " user.title like '%" + key + "%' OR"
-								+ " user.role like '%" + key + "%' OR"  
+								+ " user.title like '%" + key + "%' OR" 
 								+ " job_post.title like '%" + key + "%' OR"
 								+ " job_post.description like '%" + key + "%' OR"
-								+ " profession.title like '%" + key + "%' "
+								+ " profession.title like '%" + key + "%' )"
 			              + " )";
 			
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
