@@ -15,10 +15,10 @@ public class SearchBody {
 	
 	//for hirer
 	@JsonbProperty("job_title")
-	private String jobTitle;
-	private String description;
+	private String jobTitle = "";
+	private String description = "";
 	@JsonbProperty("id_profession")
-	private long professionId;
+	private long professionId = -1;
 	
 	public String getImagePath() {
 		return imagePath;

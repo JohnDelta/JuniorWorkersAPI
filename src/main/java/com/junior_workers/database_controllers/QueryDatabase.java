@@ -23,33 +23,34 @@ public class QueryDatabase {
 				
 				searchBodies = new ArrayList<SearchBody>();
 				
-				String query = "SELECT DISTINCT user.firstname, user.lastname, user.email, user.title, user.image_path, user.role " + 
-			           " FROM user, education, language, skill, user_has_language, user_has_education, user_has_skill, " +
-			            "    experience, profession, education_level, language_level " +
-			           " WHERE " +
-			               " user.id_user = user_has_language.id_user AND " +
-			               " user.id_user = user_has_education.id_user AND " +
-			               " user.id_user = user_has_skill.id_user AND " +
-			               " education.id_education = user_has_education.id_education AND " +
-			               " language.id_language = user_has_language.id_language AND " +
-			               " skill.id_skill = user_has_skill.id_skill AND " +
-			               " experience.id_user = user.id_user AND " +
-			               " profession.id_profession = experience.id_profession AND " +
-			               " user_has_education.id_education_level = education_level.id_education_level AND " +
-			               " user_has_language.id_language_level = language_level.id_language_level AND " +
-			               " user.role = '" + role + "' AND " +
-			               " user.availability = 1 AND " +
-			               " ( " +
-			                   " user.firstname like '%" + key + "%' OR " + 
-			                   " user.lastname like '%" + key + "%' OR " + 
-			                   " user.bio like '%" + key + "%' OR " +
-			                   " user.title like '%" + key + "%' OR " +
-			                   " education.title like '%" + key + "%' OR " +
-			                   " language.title like '%" + key + "%' OR " +
-			                   " skill.title like '%" + key + "%' OR " +
-			                   " experience.company like '%" + key + "%' OR " +
-			                   " profession.title like '%" + key + "%' " +
-			               " )";
+				String query = "SELECT DISTINCT user.email AS email, user.firstname AS firstname, user.lastname AS lastname,"
+						+ " user.role AS role, user.title AS title, user.image_path AS image_path"
+						+ " FROM user"
+							+ " LEFT JOIN experience ON experience.id_user = user.id_user"
+							+ " LEFT JOIN profession ON profession.id_profession = experience.id_profession"
+							
+							+ " LEFT JOIN user_has_education ON user_has_education.id_user = user.id_user"
+							+ " LEFT JOIN education ON education.id_education = user_has_education.id_education"
+							
+							+ " LEFT JOIN user_has_language ON user_has_language.id_user = user.id_user"
+							+ " LEFT JOIN language ON language.id_language = user_has_language.id_language"
+							
+							+ " LEFT JOIN user_has_skill ON user_has_skill.id_user = user.id_user"
+							+ " LEFT JOIN skill ON skill.id_skill = user_has_skill.id_skill"
+						+ " WHERE "
+							+ "("
+								+ " user.role LIKE '"+role+"' AND"
+								+ " user.availability = 1 AND"
+								+ " user.firstname LIKE '%"+key+"%' OR"
+								+ " user.lastname LIKE '%"+key+"%' OR"
+								+ " user.title LIKE '%"+key+"%' OR"
+								+ " user.bio LIKE '%"+key+"%' OR"
+								+ " user.email LIKE '%"+key+"%' OR"
+								+ " education.title LIKE '%"+key+"%' OR"
+								+ " language.title LIKE '%"+key+"%' OR"
+								+ " skill.title LIKE '%"+key+"%' OR"
+								+ " profession.title LIKE '%"+key+"%'"
+							+ ")";
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				ResultSet resultSet = preparedStatement.executeQuery();
 				
@@ -68,24 +69,25 @@ public class QueryDatabase {
 				
 				searchBodies = new ArrayList<SearchBody>();
 				
-				String query = "SELECT DISTINCT user.firstname, user.lastname, user.email, user.title, user.image_path, " +
-		                " job_post.title AS job_post_title, job_post.description, job_post.id_profession, user.role " + 
-		           " FROM user, job_post, profession " +
-		           " WHERE " +
-		               " user.id_user = job_post.id_user AND " +
-		               " profession.id_profession = job_post.id_profession AND " +
-		               " user.role = '" + role + "' AND " +
-		               " ( " +
-		                   " user.firstname like '%" + key + "%' OR " + 
-		                   " user.lastname like '%" + key + "%' OR " +
-		                   " user.bio like '%" + key + "%' OR " +
-		                   " user.title like '%" + key + "%' OR " +
-		                   " user.role like '%" + key + "%' OR " +
-		                    
-		                   " job_post.title like '%" + key + "%' OR " +
-		                   " job_post.description like '%" + key + "%' OR " +
-		                   " profession.title like '%" + key + "%' " +
-		               " )";
+				String query = "SELECT DISTINCT user.firstname AS firstname, user.lastname AS lastname,"
+								+ " user.email AS email, user.title AS title, user.image_path AS image_path,"
+				                + " job_post.title AS job_post_title, job_post.description AS description,"
+				                + " job_post.id_profession AS id_profession, user.role AS role" 
+			                + " FROM user"
+			                	+ " LEFT JOIN job_post ON job_post.id_user = user.id_user"
+			                	+ " LEFT JOIN profession ON profession.id_profession = job_post.id_profession"
+			                + " WHERE"
+			              + " ( "
+			              		+ " user.role LIKE '" + role + "' AND"
+								+ " user.firstname like '%" + key + "%' OR" 
+								+ " user.lastname like '%" + key + "%' OR"
+								+ " user.bio like '%" + key + "%' OR"
+								+ " user.title like '%" + key + "%' OR"
+								+ " user.role like '%" + key + "%' OR"  
+								+ " job_post.title like '%" + key + "%' OR"
+								+ " job_post.description like '%" + key + "%' OR"
+								+ " profession.title like '%" + key + "%' "
+			              + " )";
 			
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				ResultSet resultSet = preparedStatement.executeQuery();
