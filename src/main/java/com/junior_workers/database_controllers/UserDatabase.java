@@ -104,17 +104,17 @@ public class UserDatabase {
 			user.setBio(previousDataUser.getBio());
 		}
 		
-		if(user.getImagePath().isEmpty()) {
-			user.setImagePath(previousDataUser.getImagePath());
-		}
-		
-		if(user.getVideoPath().isEmpty()) {
-			user.setVideoPath(previousDataUser.getVideoPath());
-		}
-		
-		if(user.getResumePath().isEmpty()) {
-			user.setResumePath(previousDataUser.getResumePath());
-		}
+//		if(user.getImagePath().isEmpty()) {
+//			user.setImagePath(previousDataUser.getImagePath());
+//		}
+//		
+//		if(user.getVideoPath().isEmpty()) {
+//			user.setVideoPath(previousDataUser.getVideoPath());
+//		}
+//		
+//		if(user.getResumePath().isEmpty()) {
+//			user.setResumePath(previousDataUser.getResumePath());
+//		}
 		
 		Connection connection = null;
 		try{

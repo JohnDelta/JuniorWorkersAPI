@@ -12,8 +12,6 @@ import com.junior_workers.models.User;
 
 public class SkillDatabase {
 	
-	private String tableName = "skill";
-	
 	public List<Skill> getAll() throws SQLException {
 		
 		List<Skill> skills = new ArrayList<Skill>();

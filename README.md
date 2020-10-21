@@ -35,6 +35,10 @@ junior workers
 
 ` grant all on junior_workers.* to 'juniorworkers_user'@'%'; `
 
+## Setup uploads folder
+- Create a folder on server (outside of the project) for file uploading and setup the folder's path in the MediaService.java file final var with name UPLOADS_PATH. 
+- Default path is: ` C:\\Users\\john\\Documents\\junior_workers_uploads\\ `
+
 ## Install API (setup DB first required)
 - clone the project to a location and open it
 
@@ -236,9 +240,37 @@ junior workers
 - returns: application/json
 
 ```
-	res
+[
+	{
+		<both for hirers and candidates>
+		"email": "string",
+		"firstname": "string",
+		"lastname": "string",
+		"title": "string",
+		"role": "string",
+		"image_path": "string",
+		
+		<only for hirers else null>
+		"job_title": "string",
+		"description": "string",
+		"id_profession": "integer",
+	}
+]
+
 ```
 
+## get image
+- url: localhost:8080/api/media/images/get
+- method: POST
+- content-type: application/json
+- body: ` {"image_path": "image name"} `
+- returns: image/png
 
+## update user's image
+- url: localhost:8080/api/media/images/get
+- method: POST
+- content-type: multipart/form-data
+- body: ` (formData) {"jwt": "token", "file": image file} `
+- returns: image/png
 
 

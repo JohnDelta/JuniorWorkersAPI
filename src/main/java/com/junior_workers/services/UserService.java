@@ -71,6 +71,7 @@ public class UserService {
 		user.setLastname(userAddRequest.getLastname());
 		user.setRole(userAddRequest.getRole());
 		user.setPassword(userAddRequest.getPassword());
+		user.setImagePath("default.png");
 		
 		if(new UserDatabase().create(user)) {
 			return Response.status(200).build();
@@ -95,8 +96,7 @@ public class UserService {
 		if(mode.equals("candidate")) {
 			
 			// make sure the account you update is the jwt owners
-			User user = new UserDatabase().find(email);
-			updateCandidateRequest.setUser(user);
+			updateCandidateRequest.getUser().setEmail(email);
 			
 			new UserDatabase().update(updateCandidateRequest.getUser());
 			
