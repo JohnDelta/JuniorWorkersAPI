@@ -7,23 +7,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import com.junior_workers.authentication.JWTAuthenticate;
-import com.junior_workers.database_controllers.UserDatabase;
-import com.junior_workers.models.User;
 
 import jakarta.activation.MimetypesFileTypeMap;
-import jakarta.servlet.ServletContext;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -31,8 +25,6 @@ import jakarta.ws.rs.core.Response;
 public class MediaService {
 	
 	private final String UPLOADS_PATH = "C:\\Users\\john\\Documents\\junior_workers_uploads\\";
-	
-	@Context ServletContext servletContext;
 	
 	@GET
 	@Path("images/get/{image_path}")
@@ -60,43 +52,25 @@ public class MediaService {
 	@Path("images/update")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response updateMedia(
-			//@FormDataParam("jwt") String jwt,
-			@FormDataParam("file") FormDataContentDisposition fileMetaData,
+//			@QueryParam("jwt") String jwt,
+			@FormDataParam("file") ContentDisposition disposition,
 			@FormDataParam("file") InputStream inputStream
 	) throws Exception {
 		
-		System.out.println(fileMetaData.getFileName()+" "+fileMetaData.getType());
+		System.out.println(disposition.getFileName());
 		
-//		try
-//	    {
-//	        int read = 0;
-//	        byte[] bytes = new byte[1024];
-//	 
-//	        OutputStream out = new FileOutputStream(new File(UPLOADS_PATH + imagePath));
-//	        while ((read = inputStream.read(bytes)) != -1) 
-//	        {
-//	            out.write(bytes, 0, read);
-//	        }
-//	        
-//	        out.flush();
-//	        out.close();   
-//	    } catch (IOException e) {
-//	    	e.printStackTrace();
-//	    	return Response.status(404).build();
-//	    }
-		
-		
-		
-//		String jwtUnserializedFromDataBody = jwt.split("\n")[3];
-//		
-//		String email = JWTAuthenticate.getUsername(jwtUnserializedFromDataBody);
+//		if(!fileType.matches("png|jpeg|jpg")) {
+//			return Response.status(400).build();
+//		}
+//	
+//		String email = JWTAuthenticate.getUsername(jwt);
 //		if(email == null) {
 //			return Response.status(401).build();
 //		}
 //		
 //		User user = new UserDatabase().find(email);
 //		int rnd = new Random().nextInt(99999-1000) + 1000;
-//		String imagePath = "user_" + user.getUserId() + "_" + rnd;
+//		String imagePath = "user_" + user.getUserId() + "_" + rnd + "." + fileType;
 //		
 //		try
 //	    {
@@ -112,6 +86,10 @@ public class MediaService {
 //	        out.flush();
 //	        out.close();
 //	        
+//	        if(!user.getImagePath().equals("default.png")) {
+//	        	new File(UPLOADS_PATH + user.getImagePath()).delete();
+//	        }
+//	        
 //	        user.setImagePath(imagePath);
 //			new UserDatabase().update(user);
 //	    
@@ -119,7 +97,7 @@ public class MediaService {
 //	    	e.printStackTrace();
 //	    	return Response.status(404).build();
 //	    }
-		
+//		
 	    return Response.ok().build();
 	}
 }
