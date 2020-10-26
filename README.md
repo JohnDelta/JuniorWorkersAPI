@@ -50,9 +50,6 @@ junior workers
 	
 # API Requests (local testing server: localhost:8080/api)
 
-* be careful with the key naming convention. It's been changed to match
-	the junior-workers's old PHP API 
-
 ## login
 - url: localhost:8080/api/user/login
 - method: POST
@@ -233,7 +230,7 @@ junior workers
 
 ```
 ## search
-- url: localhost:8080/api/search/all
+- url: localhost:8080/api/search/all?role={search-type}&key={search-input}
 - method: POST
 - content-type: application/json
 - body: ` {"role": "candidate | hirer", "key":"any key to search for"} `
@@ -260,17 +257,44 @@ junior workers
 ```
 
 ## get user's image
-- url: localhost:8080/api/media/images/get
+- url: localhost:8080/api/media/images/get/{image_path}
 - method: POST
-- content-type: application/json
-- body: ` {"image_path": "image name"} `
+- content-type: path param
 - returns: image/png
 
 ## update user's image
-- url: localhost:8080/api/media/images/get
+- url: localhost:8080/api/media/images/update
 - method: POST
 - content-type: multipart/form-data
 - body: ` (formData) {"jwt": "token", "file": image file, "file_type": "png"} `
-- returns: image/png
+- returns: application/json
+
+## reset user's image
+- url: localhost:8080/api/media/images/reset
+- method: POST
+- content-type: application/json
+- body: ` {"jwt": "token"} `
+- returns: application/json
+
+## get user's video
+- url: localhost:8080/api/media/video/get/{video_path}
+- method: POST
+- content-type: path param
+- returns: application_octet_stream
+
+## update user's video
+- url: localhost:8080/api/media/video/update
+- method: POST
+- content-type: multipart/form-data
+- body: ` (formData) {"jwt": "token", "file": video file, "file_type": "mp4"} `
+- returns: application/json
+
+
+
+
+
+
+
+
 
 
