@@ -259,7 +259,7 @@ junior workers
 
 ```
 
-## get image
+## get user's image
 - url: localhost:8080/api/media/images/get
 - method: POST
 - content-type: application/json
@@ -270,7 +270,7 @@ junior workers
 - url: localhost:8080/api/media/images/get
 - method: POST
 - content-type: multipart/form-data
-- body: ` (formData) {"jwt": "token", "file": image file} `
+- body: ` (formData) {"jwt": "token", "file": image file, "file_type": "png"} `
 - returns: image/png
 
 

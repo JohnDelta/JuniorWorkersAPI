@@ -7,9 +7,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import org.glassfish.jersey.media.multipart.ContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 
+import com.junior_workers.authentication.JWTAuthenticate;
+import com.junior_workers.database_controllers.UserDatabase;
+import com.junior_workers.models.User;
 
 import jakarta.activation.MimetypesFileTypeMap;
 import jakarta.ws.rs.Consumes;
@@ -51,53 +53,55 @@ public class MediaService {
 	@POST
 	@Path("images/update")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response updateMedia(
-//			@QueryParam("jwt") String jwt,
-			@FormDataParam("file") ContentDisposition disposition,
-			@FormDataParam("file") InputStream inputStream
-	) throws Exception {
+	public Response updateMedia(MultipartBody body) throws Exception {
 		
-		System.out.println(disposition.getFileName());
+		InputStream inputStream = body.getAttachmentObject("file", InputStream.class);
+		String jwt = body.getAttachmentObject("jwt", String.class);
+		String fileType = body.getAttachmentObject("file_type", String.class);
 		
-//		if(!fileType.matches("png|jpeg|jpg")) {
-//			return Response.status(400).build();
-//		}
-//	
-//		String email = JWTAuthenticate.getUsername(jwt);
-//		if(email == null) {
-//			return Response.status(401).build();
-//		}
-//		
-//		User user = new UserDatabase().find(email);
-//		int rnd = new Random().nextInt(99999-1000) + 1000;
-//		String imagePath = "user_" + user.getUserId() + "_" + rnd + "." + fileType;
-//		
-//		try
-//	    {
-//	        int read = 0;
-//	        byte[] bytes = new byte[1024];
-//	 
-//	        OutputStream out = new FileOutputStream(new File(UPLOADS_PATH + imagePath));
-//	        while ((read = inputStream.read(bytes)) != -1) 
-//	        {
-//	            out.write(bytes, 0, read);
-//	        }
-//	        
-//	        out.flush();
-//	        out.close();
-//	        
-//	        if(!user.getImagePath().equals("default.png")) {
-//	        	new File(UPLOADS_PATH + user.getImagePath()).delete();
-//	        }
-//	        
-//	        user.setImagePath(imagePath);
-//			new UserDatabase().update(user);
-//	    
-//	    } catch (IOException e) {
-//	    	e.printStackTrace();
-//	    	return Response.status(404).build();
-//	    }
-//		
+		String email = JWTAuthenticate.getUsername(jwt);
+		User user = new UserDatabase().find(email);
+		int rnd = new Random().nextInt(99999-1000) + 1000;
+		String imagePath = "user_" + user.getUserId() + "_" + rnd + "." + fileType;
+		
+		if(!fileType.matches("png|jpeg|jpg")) {
+			inputStream.close();
+			return Response.status(400).build();
+		}
+	
+		if(email == null) {
+			inputStream.close();
+			return Response.status(401).build();
+		}
+		
+		try
+	    {
+	        int read = 0;
+	        byte[] bytes = new byte[1024];
+	 
+	        OutputStream out = new FileOutputStream(new File(UPLOADS_PATH + imagePath));
+	        while ((read = inputStream.read(bytes)) != -1) 
+	        {
+	            out.write(bytes, 0, read);
+	        }
+	        
+	        out.flush();
+	        out.close();
+	        
+	        if(!user.getImagePath().equals("default.png")) {
+	        	new File(UPLOADS_PATH + user.getImagePath()).delete();
+	        }
+	        
+	        user.setImagePath(imagePath);
+			new UserDatabase().update(user);
+	    
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    	return Response.status(404).build();
+	    } finally {
+	    	inputStream.close();
+	    }
+		
 	    return Response.ok().build();
 	}
 }
