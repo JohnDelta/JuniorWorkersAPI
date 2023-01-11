@@ -39,9 +39,9 @@ The previous API was written is PHP and I transered it to Java using Maven to se
 ## Install API (setup DB first required)
 - clone the project to a location and open it
 
-` git clone https://github.com/JohnDelta/9laugh_api.git `
+` git clone https://github.com/JohnDelta/JuniorWorkersAPI.git `
 
-` cd 9laugh_api `
+` cd JuniorWorkersAPI `
 
 - build and run the project locally on your local server
 	
