@@ -1,13 +1,10 @@
 # JuniorWorkersAPI
 
-Restfull API provider for the Junior Workers project
-
-The current API is written is PHP and I'm transferring it to Java.
-
-Junior Workers main project can be found at https://github.com/JohnDelta/junior_workers
-
 ## About
-junior workers
+
+Restfull API provider for my [Junior Workers](https://github.com/JohnDelta/junior-workers) project
+
+The previous API was written is PHP and I transered it to Java using Spring Boot.
 
 # Build Info
 
