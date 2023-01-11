@@ -4,7 +4,7 @@
 
 Restfull API provider for my [Junior Workers](https://github.com/JohnDelta/junior-workers) project
 
-The previous API was written is PHP and I transered it to Java using Spring Boot.
+The previous API was written is PHP and I transered it to Java using Maven to setup the file structure.
 
 # Build Info
 
